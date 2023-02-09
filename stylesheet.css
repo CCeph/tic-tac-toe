@@ -52,6 +52,19 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Gameboard styling */
+
+.game-template {
+    display: grid;
+    grid-template: 100px 100px 100px / 100px 100px 100px;
+}
+
+.box {
+    border: 5px solid black;
+}
+
+
+
 /* Footer styling */
 .footer {
     background-color: black;
