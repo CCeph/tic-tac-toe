@@ -11,28 +11,34 @@ let gameboard = (function() {
     $boxes.forEach(addBoxListener);
 
     //When a box is clicked, its number will be stored in this value.
-    let currentBox = null;
+    let _currentBox = null;
 
     function addBoxListener(box) {
-        box.addEventListener("click", getClickedBoxNum);
+        box.addEventListener("click", _setClickedBoxNum);
+    }
+
+    //Sets _currentBox to the latest box to be clicked.
+    function _setClickedBoxNum() {
+        let num = this.dataset.num;
+        _currentBox = num
     }
 
     function getClickedBoxNum() {
-        let num = this.dataset.num;
-        currentBox = num
+        return _currentBox;
     }
 
-    //Add event listener to every box of the gameboard and get its number.
-
     return {
-        
+        getClickedBoxNum: getClickedBoxNum,
     }
 })();
 
 let game = (function () {
     
     //Array to hold the value of each box on the gameboard.
-    let gameArray = []
+    let _gameArray = [null, null, null, null, null, null, null, null, null]
+
+    //Assigns the number of the latest box to be clicked to chosenBox.
+    chosenBox = gameboard.getClickedBoxNum();
 })()
 
 main();
