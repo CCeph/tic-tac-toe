@@ -25,4 +25,10 @@ let gameboard = (function() {
     }
 })();
 
+let game = (function () {
+    
+    //Array to hold the value of each box on the gameboard.
+    let gameArray = []
+})()
+
 main();
