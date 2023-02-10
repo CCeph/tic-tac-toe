@@ -29,6 +29,9 @@ var events = {
   }
 };
 
+let player1 = createPlayer("player1", "X");
+let player2 = createPlayer("player2", "O");
+
 let gameboard = (function() {
 
     //cache DOM
@@ -42,6 +45,12 @@ let gameboard = (function() {
 
     function _render() {
         events.emit('boxSelected', _currentBox);
+        currentGameArray = game.getGameArray();
+        counter = 0
+        $boxes.forEach(function (box) {
+            box.textContent = currentGameArray[counter];
+            counter += 1;
+        })
     }
 
     function addBoxListener(box) {
@@ -51,7 +60,7 @@ let gameboard = (function() {
     //Sets _currentBox to the latest box to be clicked.
     function _setClickedBoxNum() {
         let num = this.dataset.num;
-        _currentBox = num
+        _currentBox = num;
         _render();
     }
 
@@ -69,12 +78,35 @@ let game = (function () {
     //Array to hold the value of each box on the gameboard.
     let _gameArray = [null, null, null, null, null, null, null, null, null]
 
+    let _currentPlayer = player1;
+
     //bind events
     events.on('boxSelected', _updateGameArray);
 
     function _updateGameArray(chosenBox) {
-        _gameArray[chosenBox] = "X";
-        console.log(_gameArray);
+        //Check if the current box is already filled
+        if (_gameArray[chosenBox] === null) {
+            _gameArray[chosenBox] = _currentPlayer.getSymbol();
+
+            //switches players
+            if (_currentPlayer === player1) {
+                _currentPlayer = player2;
+            } else if (_currentPlayer === player2) {
+                _currentPlayer = player1;
+            } else {
+                console.log("error");
+            }
+        } else {
+            return
+        }
+    }
+
+    function getGameArray() {
+        return _gameArray;
+    }
+
+    return {
+        getGameArray: getGameArray,
     }
 })();
 
@@ -87,8 +119,5 @@ function createPlayer(name, symbol) {
         }
     }
 }
-
-let player1 = createPlayer("player1", "X");
-let player2 = createPlayer("player2", "O");
 
 main();
