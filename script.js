@@ -10,12 +10,16 @@ let gameboard = (function() {
     //bind events
     $boxes.forEach(addBoxListener);
 
+    //When a box is clicked, its number will be stored in this value.
+    let currentBox = null;
+
     function addBoxListener(box) {
         box.addEventListener("click", getClickedBoxNum);
     }
 
     function getClickedBoxNum() {
         let num = this.dataset.num;
+        currentBox = num
     }
 
     //Add event listener to every box of the gameboard and get its number.
