@@ -91,8 +91,10 @@ let game = (function () {
             //switches players
             if (_currentPlayer === player1) {
                 _currentPlayer = player2;
+                events.emit("gameStateUpdated", "player2 turn");
             } else if (_currentPlayer === player2) {
                 _currentPlayer = player1;
+                events.emit("gameStateUpdated", "player1 turn");
             } else {
                 console.log("error");
             }
@@ -137,9 +139,9 @@ let game = (function () {
         //Checks if winningSymbol matches the symbol of either player. If it does,
         //that player is picked as the winner.
         if (winningSymbol === player1.getSymbol()) {
-            console.log("Player1 Won");
+            events.emit("gameStateUpdated", "player1 won");
         } else if (winningSymbol === player2.getSymbol()) {
-            console.log("Player2 Won");
+            events.emit("gameStateUpdated", "player2 won");
         }
 
     }
@@ -150,6 +152,38 @@ let game = (function () {
 
     return {
         getGameArray: getGameArray,
+    }
+})();
+
+let displayController = (function () {
+    
+    //cache DOM
+    $gameState = document.querySelector(".state-display");
+
+    //bind events
+    events.on("gameStateUpdated", renderGameState);
+
+    function renderGameState(condition) {
+        switch (condition) {
+            case "player1 turn":
+                $gameState.textContent = "Player 1's Turn";
+                break;
+            case "player2 turn":
+                $gameState.textContent = "Player 2's Turn";
+                break;
+            case "player1 won":
+                $gameState.textContent = "Player 1 Won";
+                break;
+            case "player2 won":
+                $gameState.textContent = "Player 2 Won";
+                break;
+            default:
+                console.log("Error");
+        }
+    }
+
+    return {
+        
     }
 })();
 
