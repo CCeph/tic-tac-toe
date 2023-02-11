@@ -105,28 +105,43 @@ let game = (function () {
 
     function _checkWinners() {
         //The following variables are used to simplify the look of the actual code.
-        let row1Match = (_gameArray[0] === player1.getSymbol() && _gameArray[1] === player1.getSymbol() && _gameArray[2] === player1.getSymbol()) || (_gameArray[0] === player2.getSymbol() && _gameArray[1] === player2.getSymbol() && _gameArray[2] === player2.getSymbol())
+        let row1Match = (_gameArray[0] === _gameArray[1] && _gameArray[1] ===  _gameArray[2] && _gameArray[0] != null);
 
-        let row2Match = (_gameArray[3] === player1.getSymbol() && _gameArray[4] === player1.getSymbol() && _gameArray[5] === player1.getSymbol()) || (_gameArray[3] === player2.getSymbol() && _gameArray[4] === player2.getSymbol() && _gameArray[5] === player2.getSymbol())
+        let row2Match = (_gameArray[3] === _gameArray[4] && _gameArray[4] === _gameArray[5] && _gameArray[3] != null)
 
-        let row3Match = (_gameArray[6] === player1.getSymbol() && _gameArray[7] === player1.getSymbol() && _gameArray[8] === player1.getSymbol()) || (_gameArray[6] === player2.getSymbol() && _gameArray[7] === player2.getSymbol() && _gameArray[8] === player2.getSymbol())
+        let row3Match = (_gameArray[6] === _gameArray[7] && _gameArray[7] === _gameArray[8] && _gameArray[6] != null)
 
-        let col1Match = (_gameArray[0] === player1.getSymbol() && _gameArray[3] === player1.getSymbol() && _gameArray[6] === player1.getSymbol()) || (_gameArray[0] === player2.getSymbol() && _gameArray[3] === player2.getSymbol() && _gameArray[6] === player2.getSymbol())
+        let col1Match = (_gameArray[0] === _gameArray[3] && _gameArray[3] === _gameArray[6] && _gameArray[0] != null)
 
-        let col2Match = (_gameArray[1] === player1.getSymbol() && _gameArray[4] === player1.getSymbol() && _gameArray[7] === player1.getSymbol()) || (_gameArray[4] === player2.getSymbol() && _gameArray[1] === player2.getSymbol() && _gameArray[7] === player2.getSymbol())
+        let col2Match = (_gameArray[1] === _gameArray[4] && _gameArray[4] === _gameArray[7] && _gameArray[1] != null)
 
-        let col3Match = (_gameArray[2] === player1.getSymbol() && _gameArray[5] === player1.getSymbol() && _gameArray[8] === player1.getSymbol()) || (_gameArray[8] === player2.getSymbol() && _gameArray[5] === player2.getSymbol() && _gameArray[2] === player2.getSymbol())
+        let col3Match = (_gameArray[2] === _gameArray[5] && _gameArray[5] === _gameArray[8] && _gameArray[2] != null)
 
-        let diag1Match = (_gameArray[0] === player1.getSymbol() && _gameArray[4] === player1.getSymbol() && _gameArray[8] === player1.getSymbol()) || (_gameArray[0] === player2.getSymbol() && _gameArray[4] === player2.getSymbol() && _gameArray[8] === player2.getSymbol())
+        let diag1Match = (_gameArray[0] === _gameArray[4] && _gameArray[4] === _gameArray[8] && _gameArray[0] != null)
 
-        let diag2Match = (_gameArray[2] === player1.getSymbol() && _gameArray[4] === player1.getSymbol() && _gameArray[6] === player1.getSymbol()) || (_gameArray[6] === player2.getSymbol() && _gameArray[4] === player2.getSymbol() && _gameArray[2] === player2.getSymbol())
+        let diag2Match = (_gameArray[2] === _gameArray[4] && _gameArray[4] === _gameArray[6] && _gameArray[2] != null)
 
 
         //Checks for any of the winning matches. If any are found
-        //it congratulates the winner.
-        if (row1Match || row2Match || row3Match || col1Match || col2Match || col3Match || diag1Match || diag2Match) {
-            console.log("winner")
+        //it retrieves the winning symbol in order to figure out the winner.
+        let winningSymbol = undefined;
+
+        if (row1Match || col1Match) {
+            winningSymbol = _gameArray[0];
+        } else if (row3Match || col3Match) {
+            winningSymbol = _gameArray[8];
+        } else if (row2Match || col2Match || diag1Match || diag2Match) {
+            winningSymbol = _gameArray[4];
         }
+
+        //Checks if winningSymbol matches the symbol of either player. If it does,
+        //that player is picked as the winner.
+        if (winningSymbol === player1.getSymbol()) {
+            console.log("Player1 Won");
+        } else if (winningSymbol === player2.getSymbol()) {
+            console.log("Player2 Won");
+        }
+
     }
 
     function getGameArray() {
