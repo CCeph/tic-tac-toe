@@ -177,8 +177,6 @@ let displayController = (function () {
             case "player2 won":
                 $gameState.textContent = "Player 2 Won";
                 break;
-            default:
-                console.log("Error");
         }
     }
 
