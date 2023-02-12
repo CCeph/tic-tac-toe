@@ -38,7 +38,7 @@ let gameboard = (function() {
     let $boxes = document.querySelectorAll(".box");
 
     //bind events
-    $boxes.forEach(addBoxListener);
+    $boxes.forEach(_addBoxListener);
     events.on("gameStateUpdated", _updateBoxListeners);
 
     //When a box is clicked, its number will be stored in this value.
@@ -54,7 +54,7 @@ let gameboard = (function() {
         })
     }
 
-    function addBoxListener(box) {
+    function _addBoxListener(box) {
         box.addEventListener("click", _setClickedBoxNum);
     }
 
@@ -71,6 +71,17 @@ let gameboard = (function() {
             case "player2 won":
                 $boxes.forEach(_removeBoxListener);
                 break;
+            
+            case "restart-game":
+                $boxes.forEach(function (box) {
+                    //Erases the contents of all the boxes.
+                    box.textContent = "";
+
+                    //Adds the event listeners back in case they were removed due
+                    //to the game ending. If they were not removed, the second input
+                    //is discarded because of how eventListener works.
+                    _addBoxListener(box);
+                });
         }
     }
 
@@ -93,12 +104,16 @@ let gameboard = (function() {
 let game = (function () {
     
     //Array to hold the value of each box on the gameboard.
-    let _gameArray = [null, null, null, null, null, null, null, null, null]
+    let _gameArray = [null, null, null, null, null, null, null, null, null];
 
     let _currentPlayer = player1;
 
+    //cache DOM
+    let $restartGame = document.querySelector(".restart-game");
+
     //bind events
     events.on('boxSelected', _updateGameArray);
+    $restartGame.addEventListener("click", _restartGame);
 
     function _updateGameArray(chosenBox) {
         //Check if the current box is already filled
@@ -163,6 +178,12 @@ let game = (function () {
 
     }
 
+    function _restartGame() {
+        _gameArray = [null, null, null, null, null, null, null, null, null];
+        _currentPlayer = player1;
+        events.emit("gameStateUpdated", "restart-game");
+    }
+
     function getGameArray() {
         return _gameArray;
     }
@@ -193,6 +214,9 @@ let displayController = (function () {
                 break;
             case "player2 won":
                 $gameState.textContent = "Player 2 Won";
+                break;
+            case "restart-game":
+                $gameState.textContent = "Player 1's Turn";
                 break;
         }
     }
