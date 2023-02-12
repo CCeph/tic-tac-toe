@@ -39,6 +39,7 @@ let gameboard = (function() {
 
     //bind events
     $boxes.forEach(addBoxListener);
+    events.on("gameStateUpdated", _updateBoxListeners);
 
     //When a box is clicked, its number will be stored in this value.
     let _currentBox = null;
@@ -55,6 +56,22 @@ let gameboard = (function() {
 
     function addBoxListener(box) {
         box.addEventListener("click", _setClickedBoxNum);
+    }
+
+    function _removeBoxListener(box) {
+        box.removeEventListener("click", _setClickedBoxNum);
+    }
+
+    function _updateBoxListeners(condition) {
+        switch (condition) {
+            case "player1 won":
+                $boxes.forEach(_removeBoxListener);
+                break;
+            
+            case "player2 won":
+                $boxes.forEach(_removeBoxListener);
+                break;
+        }
     }
 
     //Sets _currentBox to the latest box to be clicked.
