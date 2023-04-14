@@ -45,6 +45,9 @@ body {
 
 .header {
     background-color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header h1 {
