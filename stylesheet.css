@@ -61,6 +61,11 @@ body {
 
 .box {
     border: 5px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    font-family: Arial;
 }
 
 /* Main container styling */
